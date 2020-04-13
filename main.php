@@ -1,9 +1,7 @@
 <?php
 
-    $variable = 35;
-    $nombre = "Marcos";
+        //Print arrays
 
-    echo $variable . $nombre;
-    print 'Curioso';
+        print_r(array(4, 5, 6));
 
 ?>
