@@ -1,25 +1,16 @@
 <?php
 
-        $frutas = array('Melocoton', 'Sandia', 'Manzana', 'Guayaba');
+       $num1 = 10;
+       $num2 = 20;
 
-        print_r($frutas);
+       function multiply($a, $b){
+           if(gettype($a) != "integer" || gettype($b) != "integer"){
+                echo "Introduce solo numeros";
+                return null;
+           }
+            return $a * $b;
+       }
 
-        for($i = 0; $i < count($frutas); $i++){
-            echo '<br>';
-            echo $frutas[$i];
-        }
-
-        $crushes = array(
-            "Raquel" => 19,
-            "Aly" => 19,
-            "Andrea" => 19,
-            "Alondra" => 18,
-            "Martha" => 17
-        );
-
-        print_r($crushes);
-
-        foreach($crushes as $crush){
-            echo '<br>' . $crush;
-        }
+       echo multiply($num1, '');
+       echo multiply($num1, $num2);
 ?>
