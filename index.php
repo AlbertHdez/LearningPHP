@@ -1,50 +1,34 @@
 <?php
-include_once './includes/survey.php';
-?>
 
-<!DOCTYPE html>
-<html lang="en">
+include_once 'includes/user.php';
+include_once 'includes/user_session.php';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
-    <link rel="stylesheet" href="main.css">
-</head>
+$userSession =  new UserSession();
+$user = new User();
 
-<body>
-    <form action="#" method="POST">
-        <?php
-        $survey = new Survey();
-        $showResults = false;
+if(isset($_SESSION['user']))
+{
+    $user->setUser($userSession->getCurrentUser());
+    include_once 'views/home.php';
+}
+else if(isset($_POST['username']) && isset($_POST['password']))
+{
+    $userForm = $_POST['username'];
+    $passForm = $_POST['password'];
 
-        if (isset($_POST['lenguaje'])) {
-            $showResults = true;
-            $survey->setOptionSelected($_POST['lenguaje']);
-            $survey->vote();
-        }
-
-        ?>
-        <h2>¿Cual es tu lenguaje de programacion favorito?</h2>
-        <?php
-        if ($showResults) {
-            $lenguages = $survey->showResults();
-
-            echo "<h2> {$survey->getTotalVotes()} votos totales </h2>";
-
-            foreach ($lenguages as $lenguage) {
-                $percent =  $survey->getPercentageVotes($lenguage['votos']);
-
-                include 'views/result.php';
-            }
-        } else {
-            include_once 'views/votacion.php';
-        }
-        ?>
-    </form>
-
-    <?php
-    ?>
-</body>
-
-</html>
+    if($user->userExist($userForm, $passForm))
+    {
+        $userSession->setCurrentUser($userForm);
+        $user->setUser($userForm);
+        include_once 'views/home.php';
+    }
+    else
+    {
+        $errorLogin="Usuario y/o contraseña incorrectos";
+        include_once 'views/login.php';
+    }
+}
+else
+{
+    include_once 'views/login.php';
+}
