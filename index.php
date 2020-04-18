@@ -1,34 +1,23 @@
-<?php
-
-include_once 'includes/user.php';
-include_once 'includes/user_session.php';
-
-$userSession =  new UserSession();
-$user = new User();
-
-if(isset($_SESSION['user']))
-{
-    $user->setUser($userSession->getCurrentUser());
-    include_once 'views/home.php';
-}
-else if(isset($_POST['username']) && isset($_POST['password']))
-{
-    $userForm = $_POST['username'];
-    $passForm = $_POST['password'];
-
-    if($user->userExist($userForm, $passForm))
-    {
-        $userSession->setCurrentUser($userForm);
-        $user->setUser($userForm);
-        include_once 'views/home.php';
-    }
-    else
-    {
-        $errorLogin="Usuario y/o contraseña incorrectos";
-        include_once 'views/login.php';
-    }
-}
-else
-{
-    include_once 'views/login.php';
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Email</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<form action="email.php" method="POST">
+    <h2>Contacto</h2>
+    <p>Nombre: <br>
+    <input type="text" name="name" required></p>
+    <p>Correo electrónico: <br>
+    <input type="email" name="email" required></p>
+    <p>Comentario: <br>
+    <textarea name="comment" id="" cols="30" rows="10" required></textarea></p>
+    <p class="center"><input type="submit" value="Enviar correo"></p>
+</form>
+    
+</body>
+</html>
