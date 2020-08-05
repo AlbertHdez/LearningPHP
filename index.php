@@ -1,33 +1,15 @@
 <?php
-//Require autoload
-require_once 'autoload.php';
 
-echo "<h1>Bienvenido a mi web</h1>";
+require_once 'vendor/autoload.php';
 
-//Check if the controller variable exist
-if($_GET['controller']){
-	//Complete the Controller's name
-	$controllerName = $_GET['controller']."Controller";
-}else{
-	echo "Page not found";
-	exit(); //If doesn't exist, exit the program
-}
+use Spipu\Html2Pdf\Html2Pdf;
 
-//Check if the controller class exists
-if(class_exists($controllerName)){
-	//Create a new Controller's Intance
-	$controller = new $controllerName();
-}else{
-	echo "Page not found";
-	exit();
-}
+$html2pdf = new Html2Pdf();
 
-//Check if the action and its method exists
-if(isset($_GET['action']) && method_exists($controller, $_GET['action'])){
-	$action = $_GET['action'];
-	$controller->$action(); // Call the action function
-}else{
-	echo "Page not found";
-	exit();	
-}
+//Get the view to print
+ob_start();
+require_once 'pdf_to_get.php';
+$html = ob_get_clean();
 
+$html2pdf->writeHTML($html);
+$html2pdf->output('pfd_output.pdf');
