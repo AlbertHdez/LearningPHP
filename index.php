@@ -1,23 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Email</title>
-    <link rel="stylesheet" href="main.css">
-</head>
-<body>
-<form action="email.php" method="POST">
-    <h2>Contacto</h2>
-    <p>Nombre: <br>
-    <input type="text" name="name" required></p>
-    <p>Correo electrónico: <br>
-    <input type="email" name="email" required></p>
-    <p>Comentario: <br>
-    <textarea name="comment" id="" cols="30" rows="10" required></textarea></p>
-    <p class="center"><input type="submit" value="Enviar correo"></p>
-</form>
-    
-</body>
-</html>
+<?php
+//Require autoload
+require_once 'autoload.php';
+
+echo "<h1>Bienvenido a mi web</h1>";
+
+//Check if the controller variable exist
+if($_GET['controller']){
+	//Complete the Controller's name
+	$controllerName = $_GET['controller']."Controller";
+}else{
+	echo "Page not found";
+	exit(); //If doesn't exist, exit the program
+}
+
+//Check if the controller class exists
+if(class_exists($controllerName)){
+	//Create a new Controller's Intance
+	$controller = new $controllerName();
+}else{
+	echo "Page not found";
+	exit();
+}
+
+//Check if the action and its method exists
+if(isset($_GET['action']) && method_exists($controller, $_GET['action'])){
+	$action = $_GET['action'];
+	$controller->$action(); // Call the action function
+}else{
+	echo "Page not found";
+	exit();	
+}
+
