@@ -2,14 +2,37 @@
 
 require_once 'vendor/autoload.php';
 
-use Spipu\Html2Pdf\Html2Pdf;
+// DB conexion
+$conexion = new mysqli("localhost", "ADMIN", "Masis12031964", "notes");
+$conexion->query("SET NAMES 'utf8'");
 
-$html2pdf = new Html2Pdf();
 
-//Get the view to print
-ob_start();
-require_once 'pdf_to_get.php';
-$html = ob_get_clean();
+// consult to pagination
+$consult = $conexion->query("SELECT COUNT(id) as 'total' FROM notes");
+$rows = $consult->fetch_object()->total;
+$number_elements_page = 2;
+// Make pagination
+$pagination = new Zebra_Pagination();
 
-$html2pdf->writeHTML($html);
-$html2pdf->output('pfd_output.pdf');
+// Number of elements to page
+$pagination->records($rows);
+
+// Number of elements per page
+$pagination->records_per_page($number_elements_page);
+
+$page = $pagination->get_page();
+
+$start = ($page - 1) * $number_elements_page;
+
+$sql = "SELECT * FROM notes LIMIT $start, $number_elements_page";
+
+$notes = $conexion->query($sql);
+
+echo '<link rel="stylesheet" href="vendor/stefangabos/zebra_pagination/public/css/zebra_pagination.css" type="text/css">';
+
+while($note = $notes->fetch_object()){
+		echo "<br><h3>{$note->title}</h3>";
+		echo "<p>{$note->description}</p> <br> <hr>";
+}
+
+$pagination->render();
