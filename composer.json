@@ -1,5 +1,5 @@
 {
     "require": {
-        "stefangabos/zebra_pagination": "^2.3"
+        "masterexploder/phpthumb": "^2.1"
     }
 }
